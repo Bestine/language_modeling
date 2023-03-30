@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Security files
+security_files
+
+# Instruction files
+*.pdf
