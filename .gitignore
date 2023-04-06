@@ -133,3 +133,6 @@ security_files
 
 # Instruction files
 *.pdf
+
+# Project deliveries for client
+.zip
