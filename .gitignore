@@ -135,4 +135,4 @@ security_files
 *.pdf
 
 # Project deliveries for client
-.zip
+*.zip
