@@ -9,7 +9,7 @@ from sentence_transformers import SentenceTransformer
 
 # global variables (e.g., nlp modules, sentencetransformer models, dependencymatcher objects) go here
 # adding globals here will mean that when we import e.g., extract_indirect_object it will still work ;)
-nlp = spacy.load('language_modeling_env/lib/python3.7/site-packages/en_core_web_sm/en_core_web_sm-3.5.0')
+nlp = spacy.load('en_core_web_sm')
 model = SentenceTransformer('bert-base-nli-mean-tokens')
 
 # TASK 1
