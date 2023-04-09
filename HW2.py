@@ -68,7 +68,7 @@ def extract_indirect_object(sentence):
     tokens_matchers = [matchers.dep_ for matchers in doc]
     
     # get the sentence structure
-    sentence_structure = clf_stc(sentence)
+    sentence_structure = get_sentence_structure(sentence)
         
     if sentence_structure == 'DO':
         indobj_index = tokens_matchers.index('dative')
@@ -115,6 +115,7 @@ def extract_feature_3(noun_phrase, sentence):
     assert type(feature_3) is float
     return feature_3
 
+# TASK 3
 
 def extract_sentence_embedding(sentence):
     sentence_embedding = model.encode(sentence)
