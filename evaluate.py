@@ -26,14 +26,14 @@ def load_corpus(filename):
     return sentences
 
 
-def extract_numeric_features(NP):
-    int_feature = HW2.extract_feature_1(NP)
-    float_feature = HW2.extract_feature_3(NP)
+def extract_numeric_features(NP, sentence):
+    int_feature = HW2.extract_feature_1(NP, sentence)
+    float_feature = HW2.extract_feature_3(NP, sentence)
     return int_feature, float_feature
 
 
-def extract_string_features(NP):
-    string_features = HW2.extract_feature_2(NP)
+def extract_string_features(NP, sentence):
+    string_features = HW2.extract_feature_2(NP, sentence)
     return string_features
 
 
@@ -58,20 +58,21 @@ def extract_features_all_sentences(
         ):
     DO_numeric_features, PO_numeric_features = [], []
     DO_string_features, PO_string_features = [], []
+    # TODO: feature extract is done
     for s in list_of_sentences:
         DO_NP = HW2.extract_direct_object(s)
         PO_NP = HW2.extract_indirect_object(s)
         DO_numeric_features.append(
-            extract_numeric_features(DO_NP)
+            extract_numeric_features(DO_NP, s)
         )
         PO_numeric_features.append(
-            extract_numeric_features(PO_NP)
+            extract_numeric_features(PO_NP, s)
         )
         DO_string_features.append(
-            extract_string_features(DO_NP)
+            extract_string_features(DO_NP, s)
             )
         PO_string_features.append(
-            extract_string_features(PO_NP)
+            extract_string_features(PO_NP, s)
         )
     if mode=='train':
         DO_cv, DO_string_features = vectorize_train(DO_string_features)
@@ -91,28 +92,36 @@ def extract_features_all_sentences(
         return all_features
 
 
+def dummy_tokenizer(doc):
+    return [doc]
+
+
 def vectorize_train(list_of_strings: list):
-    vectorizer = CountVectorizer(min_df=5)
+    vectorizer = CountVectorizer(
+        min_df=5, max_df=len(list_of_strings),
+        tokenizer=dummy_tokenizer)
     counts = Counter(list_of_strings)
     strings_w_unks = []
     for w in counts:
         if counts[w] < 5:
-            strings_w_unks.append('UNK')
+            strings_w_unks += ['UNK'] * counts[w]
         else:
-            strings_w_unks.append(w)
-    vectorized = vectorizer.fit_transform(
+            strings_w_unks += [w] * counts[w]
+    vectorized = np.array(vectorizer.fit_transform(
         strings_w_unks
-        ).todense().squeeze()
+        ).todense().squeeze())
     return vectorizer, vectorized
 
 
 def vectorize_test(list_of_strings, vectorizer):
     strings_w_unks = []
-    for w in list_of_strings:
-        if w not in vectorizer.vocab:
-            strings_w_unks.append("UNK")
+    strings_w_unks = []
+    counts = Counter(list_of_strings)
+    for w in counts:
+        if counts[w] < 5:
+            strings_w_unks += ['UNK'] * counts[w]
         else:
-            strings_w_unks.append(w)
+            strings_w_unks += [w] * counts[w]
     vectorized = vectorizer.transform(
         strings_w_unks
         ).todense().squeeze()
