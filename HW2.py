@@ -40,7 +40,7 @@ def get_sentence_structure(sentence):
 
 
 def extract_direct_object(sentence):
-    extracted_direct_object = None
+    extracted_direct_object = ""
     # split the sentence into list
     tokens = sentence.split()
     
@@ -57,6 +57,8 @@ def extract_direct_object(sentence):
     for chunk in object_phrases:
         if direct_object_word in chunk:
             extracted_direct_object = chunk
+        else:
+            direct_object = direct_object_word
     
     assert type(extracted_direct_object) is str
     return extracted_direct_object
