@@ -136,3 +136,5 @@ security_files
 
 # Project deliveries for client
 *.zip
+# Documents 
+*.docx
